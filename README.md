@@ -1,2 +1,2 @@
 # Stones
-Little stones grouped together to achieve milestone
+Little stones grouped together to achieve milestone.
