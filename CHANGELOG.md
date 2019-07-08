@@ -8,7 +8,8 @@
 
  - [2019-06-13]: add python_sdk.md
  - [2019-07-08]: add producer_consumer.py
- - [2019-07-08]: add concurrency.py
+ - [2019-07-08]: add io_concurrency.py
+ - [2019-07-08]: add cpu bound cocurrency demo
 
 
 ## EDIT
