@@ -4,11 +4,12 @@ import threading
 import time
 import aiohttp
 import asyncio
+import multiprocessing
 
 sites = [
     "https://www.bilibili.com",
     "https://www.douban.com",
-] * 80
+] * 200
 
 class Synchronous:
     def __init__(self, sites):
@@ -17,7 +18,8 @@ class Synchronous:
     @staticmethod
     def download_site(url, session):
         with session.get(url) as response:
-            print(f"Read {len(response.content)} from {url}")
+            a = len(response.content)
+            #print(f"Read {a} from {url}")
 
 
     def download_all_sites(self, sites):
@@ -30,7 +32,7 @@ class Synchronous:
         start_time = time.time()
         self.download_all_sites(self.sites)
         duration = time.time() - start_time
-        print(f"Downloaded {len(sites)} in {duration} seconds")
+        print(f"Downloaded {len(sites)} sites in {duration} seconds")
 
 
 class MultiThreading:
@@ -46,17 +48,19 @@ class MultiThreading:
     def download_site(self, url):
         session = self.get_session()
         with session.get(url) as response:
-            print(f'Read {len(response.content)} from {url}')
+            a = len(response.content)
+            #print(f'Read {a} from {url}')
 
     def download_all_sites(self):
-        with concurrent.futures.ThreadPoolExecutor(max_workers=7) as executor:
+        # Thread number need to test, 7 is quickest in this situation
+        with concurrent.futures.ThreadPoolExecutor(max_workers=13) as executor:
             executor.map(self.download_site, self.sites)
 
     def run(self):
         start_time = time.time()
         self.download_all_sites()
         duration = time.time() - start_time
-        print(f'Downloaded {len(sites)} in {duration} seconds')
+        print(f'Downloaded {len(sites)} sites in {duration} seconds')
 
 
 class Asynchronous:
@@ -66,7 +70,8 @@ class Asynchronous:
     @staticmethod
     async def download_site(session, url):
         async with session.get(url) as response:
-            print('Read {0} from {1}'.format(len(await response.text()), url))
+            a = len(await response.text())
+            #print('Read {0} from {1}'.format(a, url))
 
     async def download_all_sites(self, sites):
         async with aiohttp.ClientSession() as session:
@@ -84,6 +89,37 @@ class Asynchronous:
         print(f'Downloaded {len(sites)} sites in {duration} seconds')
 
 
+session = None
+
+
+class MultiProcessing:
+    def __init__(self, sites):
+        self.sites = sites
+
+    @staticmethod
+    def set_global_session():
+        global session
+        if not session:
+            session = requests.Session()
+
+    def download_site(self, url):
+        with session.get(url) as response:
+            name = multiprocessing.current_process().name
+            a = len(response.content)
+            #print(f'{name}: Read {a} from {url}')
+
+
+    def download_all_sites(self, sites):
+        with multiprocessing.Pool(initializer=self.set_global_session) as pool:
+            pool.map(self.download_site, sites)
+
+
+    def run(self):
+        start_time = time.time()
+        self.download_all_sites(self.sites)
+        duration = time.time() - start_time
+        print(f"Downloaded {len(sites)} sites in {duration} seconds")
+    
 def main():
     print('Synchronous')
     syc = Synchronous(sites)
@@ -96,6 +132,10 @@ def main():
     print('Asynchronous')
     asyc = Asynchronous(sites)
     asyc.async_run()
+
+    print('MultiProcessing')
+    mp = MultiProcessing(sites)
+    mp.run()
     
 if __name__ == "__main__":
     main()
