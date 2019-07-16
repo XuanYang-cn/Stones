@@ -33,3 +33,18 @@
 |Priority| Website | Bref | Author |
 |:------:|---------|------|--------|
 |\* \*|[Inter-thread communication with queue](http://code.activestate.com/recipes/491281/)|python codes|recipes[@Github](https://github.com/ActiveState/code/tree/master/recipes/Python)|
+
+
+---
+**Linux Shell**
+
+- Run a script multiple times
+```shell
+$ for ((i=1; i<=10; i++))
+do
+    python script.py "$i"
+done
+```
+- Stress Test
+
+[`apache2-utils`](https://pkgs.org/download/apache2-utils)
