@@ -36,6 +36,14 @@
 
 
 ---
+**Distribute tracing**
+
+
+|Priority| Website | Bref | Author |
+|:------:|---------|------|--------|
+|\* \* \*|[OpenTracing](https://opentracing.io/)|opentracing official website |Ben Sigelman|
+
+---
 **Linux Shell**
 
 - Run a script multiple times
@@ -47,4 +55,4 @@ done
 ```
 - Stress Test
 
-[`apache2-utils`](https://pkgs.org/download/apache2-utils)
+[`apache2-utils` ab tests](https://pkgs.org/download/apache2-utils)
