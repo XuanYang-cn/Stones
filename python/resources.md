@@ -1,5 +1,14 @@
 # Resources
 
+**VIM**
+
+###### Search and substitue: substitute `foo` with `bar` 
+
+**%** for searching in all lines, **c** for asking confirmation, **I** for case sensitive
+
+	:%s/foo/bar/gcI
+
+
 ---
 **ORM**
 
