@@ -9,6 +9,12 @@
 	:%s/foo/bar/gcI
 
 ---
+**Wonderful blogs**
+
+|Priority| Website | Bref | Author |
+|:--------:|---------|------|--------|
+|\* \* \* \*|[Personal Blog](https://www.benfrederickson.com/blog/)|Recommendation algo and wonderful projects|Ben Frederickson([@Github](https://github.com/benfred))|
+---
 **Git**
 
 |Priority| Website | Bref | Author |
