@@ -4,13 +4,10 @@ __author__ = 'Yang Xuan (jumpthepig@gmail.com)'
 
 
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib
 import time
 from functools import wraps
 
 
-matplotlib.use('Qt5Agg')
 n = 1_000_000
 
 
@@ -26,16 +23,6 @@ def time_it(func, repeat=None):
         return
     return inner
 
-
-def plot():
-    cvalues = [20.1, 20.8, 21.9, 22.5, 22.7, 22.3, 21.8, 21.2, 20.9, 20.1]
-
-    C =  np.array(cvalues)
-    print(C)
-    print(C * 9 / 5 + 32)
-
-    plt.plot(C)
-    plt.show()
 
 
 @time_it(repeat=3)
