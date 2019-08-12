@@ -10,6 +10,7 @@ inoremap <F8> :nohl<CR>a
 
 set ignorecase
 set smartcase
+set backspace=2
 
 " Plugs
 
@@ -41,6 +42,9 @@ Plug 'tmhedberg/SimpylFold'
 Plug 'kien/ctrlp.vim'
 
 Plug 'vim-airline/vim-airline'
+
+" Auto comment
+Plug 'scrooloose/nerdcommenter'
 
 call plug#end()
 
@@ -95,3 +99,7 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
+noremap <Leader>y "*y
+noremap <Leader>p "*p
+noremap <Leader>Y "+y
+noremap <Leader>P "+p
