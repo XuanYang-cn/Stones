@@ -15,7 +15,7 @@ set backspace=2
 call plug#begin('~/.vim/plugged')
 
 "auto complete codes
-Plug 'Valloric/YouCompleteMe'
+" Plug 'Valloric/YouCompleteMe'
 
 " audo complete pairs
 Plug 'jiangmiao/auto-pairs'
@@ -27,7 +27,6 @@ Plug 'w0rp/ale'
 Plug 'iamcco/mathjax-support-for-mkdp'
 
 " Markdown preview
-" :MarkdownPreview
 Plug 'iamcco/markdown-preview.vim'
 
 " schema color
@@ -44,6 +43,7 @@ Plug 'vim-airline/vim-airline'
 " Auto comment
 Plug 'scrooloose/nerdcommenter'
 
+Plug 'zxqfl/tabnine-vim'
 call plug#end()
 
 " ale
