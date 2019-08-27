@@ -71,7 +71,6 @@ class Sorting:
                 nums[j-1], nums[j] = nums[j], nums[j-1]
                 j -= 1
 
-
     @classmethod
     def _quick_sort_partition(cls, nums, low, high):
         pivot_index = (low + high) // 2
@@ -110,6 +109,51 @@ class Sorting:
         '''
         cls._quick_sort(nums, 0, len(nums)-1)
 
+    @classmethod
+    @time_it
+    def merge_sort(cls, nums):
+        '''
+        Time: O(NlogN)
+        Not in-place, requier O(N) auxiliary space
+        Stable
+        Method: divide the array into two subarrays recursively.
+            Sort these subarrays recursively with mergesort again
+            If there is only a single item left in the subarray ->
+                we consider it to be sorted by definition
+            Merge the subarray to get the final sorted array
+        '''
+        return cls._merge_sort(nums)
+
+    @classmethod
+    def _merge_sort(cls, nums):
+        if len(nums) <= 1:
+            return nums
+
+        middle = len(nums) // 2
+        left = cls._merge_sort(nums[:middle])
+        right = cls._merge_sort(nums[middle:])
+
+        return cls._merge(left, right)
+
+    @classmethod
+    def _merge(cls, left, right):
+        i = 0
+        j = 0
+        result = []
+
+        while i < len(left) and j < len(right):
+            if left[i] <= right[j]:
+                result.append(left[i])
+                i += 1
+            else:
+                result.append(right[j])
+                j += 1
+
+        result.extend(left[i:])
+        result.extend(right[j:])
+
+        return result
+
 
 def gen(num):
     '''generate list with random integers of num numbers'''
@@ -145,5 +189,9 @@ def tests():
     Sorting.quick_sort(test_nums03)
     assert is_sorted(test_nums03)
 
+    # Test merge sort
+    test_nums04 = gen(100)
+    assert is_sorted(Sorting.merge_sort(test_nums04))
+    
 if __name__ == '__main__':
     tests()
