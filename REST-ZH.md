@@ -1,10 +1,11 @@
-# REST
+# 什么是 REST 和 RESTful Web API？
 
-Representational state transfer (REST) is a software architectural style that defines a set of constraints to be used for creating Web services.
+表示性状态转移（**Re**presentational **s**tate **t**ransfer ，REST）是一种架构风格，Web 服务只有遵守它的 6 个约束才能称为 RESTful Web 服务。RESTful 的 Web 服务允许客户端通过预先设定的无状态的统一方法（URI 和 HTTP协议）来获取、操作 Web 资源
 
-Web services that conform to the REST architectural style, called RESTful Web Services. RESTful Web services allow the requesting systems to access and manipulate textual representations of **Web resources** by using a **uniform and predefined set of stateless operations**
+重要的一点：**使用 HTTP 协议并不等于 RESTful**
 
-By using a stateless protocol(usually HTTP) and standard operations, RESTful systems aim for fast performance, reliability, and the ability to grow by reusing components that can be managed and updated without affectiong the system as a whoe, even while it's running.
+通过使用无状态协议（比如 HTTP 协议）和标准化操作（GET，POST 等），RESTful 的系统可以达到以下的优点： 性能更快，稳定性，组件的能在运行时管理和维护
+By using a stateless protocol(usually HTTP) and standard operations, RESTful systems aim for fast performance, reliability, and the ability to grow by reusing components that can be managed and updated without affecting the system as a whole, even while it's running.
 
 ## Architectural constraints
 
@@ -12,11 +13,15 @@ Six guiding constraints define a RESTful system. These constraints restrict the 
 
 ### Client-server architecture
 
-The principle behind the client-server constraints is the separation of concerns. Separating the user interface concerns from the data storage concerns improves the portability of the user interfaces across multiple platforms. It also improves scalability by simplifying the server components. Perhaps most significant to the Web, howeber, is that the separation allows the components to evolve independently, thus supporting the internet-scal requirement of multiple organizational domains.
+The principle behind the client-server constraints is the separation of concerns. Separating the user interface concerns from the data storage concerns improves the portability of the user interfaces across multiple platforms. It also improves scalability by simplifying the server components. Perhaps most significant to the Web, however, is that the separation allows the components to evolve independently, thus supporting the internet-scale requirement of multiple organizational domains.
+
+A non-RESTful alternative to CS architecture is event-based integration architecture. In this model, each component continuously broadcasts events while listening for pertinent events from other components. These's no one-to-one communication, only broadcasting and eavesdropping. REST requires one-to-one communication, so event-based integration architecture would not be RESTful
 
 ### Statelessness
 
-The client-server communication is constrained by no client context being stored on the server between requests. Each request from any client contains all the information necessary to service the request, and the session state is held in the client. 
+The client-server communication is constrained by no client context being stored on the server between requests. Each request from any client contains all the information necessary to service the request, and the session state is held in the client.
+
+Each request is treated as standalone, the server does not remember anything about the user who uses the API
 
 ### Cacheability
 
@@ -38,11 +43,11 @@ The uniform interface constraint is fundamental to the design of any RESTful sys
 
 **Resource indenrification in requsets**
 
-Indicidual resources are idenrified in requests, for example using URIs in RESTful Web services. The resources themselves are conceptually separate from the representations that are returned to the client. For example, the server sould send data from its database as HTML, XML or as JSON--none of which are the server's internal representation
+Individual resources are idendified in requests, for example using **URIs** in RESTful Web services. The resources themselves are conceptually separate from the representations that are returned to the client. For example, the server sould send data from its database as HTML, XML or as JSON--none of which are the server's internal representation
 
-**Resource manipulation through representations**
+**Resource representations**
 
-When a client holds a reprenstation or a resource, including any metadata attached, it has enough information to modify or delete the resource.
+Represent the state of a resource for transfer between components
 
 **Self-descriptive messages**
 
@@ -56,8 +61,8 @@ Having accessed an initial URI for the REST application--analogous to a human We
 
 - Performance in component interactions, which can be dominant factor in user-perceived performance and network efficiency
 - Scalability allowing the support of large numbers of components and interactions among components. Roy Fielding describes REST's effect on scalability as follows:
-    
-REST's client-server separation of concerns simplifies component implementation, reduces the complexity of connector semantics, imporves the effectiveness of performance tuning, and increase the scalability of pure server components. Layered system constraints allow intermediaries--proxies, gateways, and firewalls--to be introduced at various points in the communication without changing the interfaces between components, thus allowing them to assist in communication translation or improve performance via large-scale, shared caching. REST enables intermediate processing by contraining messages to be self-descriptive: interaction is stateless between requests, standard methods and media types are used to indicate semantics and exchange information, and responses explicitly indicate cacheability.
+
+> REST's client-server separation of concerns simplifies component implementation, reduces the complexity of connector semantics, imporves the effectiveness of performance tuning, and increase the scalability of pure server components. Layered system constraints allow intermediaries--proxies, gateways, and firewalls--to be introduced at various points in the communication without changing the interfaces between components, thus allowing them to assist in communication translation or improve performance via large-scale, shared caching. REST enables intermediate processing by contraining messages to be self-descriptive: interaction is stateless between requests, standard methods and media types are used to indicate semantics and exchange information, and responses explicitly indicate cacheability.
 
 - simplicity of a uniform interface
 - modifiability of components to meet changing needs(even while the application is running)
@@ -67,7 +72,7 @@ REST's client-server separation of concerns simplifies component implementation,
 
 ## Applied to Web services
 
-Web service APIs that adhere to the REST architectural constraints are called RETful APIs. HTTP-based RESTful APIs are defined with the following aspects
+Web service APIs that adhere to the REST architectural constraints are called **RESTful APIs**. HTTP-based RESTful APIs are defined with the following aspects
 
 - a base URI, such as **http://api.example.com/collection/**
 - standard HTTP methods(e.g. GET, POST, PUT, PATCh and DELETE)
@@ -90,3 +95,11 @@ The GET, PUT and DELETE methods are **idempotent**, meaning that applying them m
 The GET and POST methods are **cacheable**, meaning that responses to them are allowed to be stored for future reuse.
 
 Unlike SOAP-based Web services, there is no "official" standard for RESTful Web APIs. This is because REST is an architectural style, while SOAP is a protocol. REST is not a standard in itself, but RESTful implementations make use of standards, such as HTTP, URI, JSON, and XML. Many developers also describe their APIs as being RESTful, even though these APIs actually don't fulfill all of the architectural constraints described above (especially the uniform interface constraint).
+
+---
+
+References:
+
+\[1\]: Wikipedia. [https://en.wikipedia.org/wiki/Representational_state_transfer](https://en.wikipedia.org/wiki/Representational_state_transfer)
+
+\[2\]: *Lauren Long*, What RESTful actually means. [https://codewords.recurse.com/issues/five/what-restful-actually-means](https://codewords.recurse.com/issues/five/what-restful-actually-means)
