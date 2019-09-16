@@ -1,4 +1,4 @@
-# What is REST and RESTful Web API?
+# What is REST and RESTful Web API
 
 **Re**presentational **s**tate **t**ransfer (REST) is a software architectural style that defines a set of constraints to be used for creating Web services.
 
@@ -56,7 +56,7 @@ Each message includes enough information to describe how to process the message.
 
 **Hypermedia as the engine of application state**
 
-Having accessed an initial URI for the REST application--analogous to a human Web user accessing the home page of a website--a REST client should then be able to use server-provided links dynamically to discover all the available actinos and resources it needs. As access proceeds, the server responds with text that includes hyperlinks to other actions that are currently available.
+Having accessed an initial URI for the REST application--analogous to a human Web user accessing the home page of a website--a REST client should then be able to use server-provided links dynamically to discover all the available actions and resources it needs. As access proceeds, the server responds with text that includes hyperlinks to other actions that are currently available.
 
 ## Architectural properties
 
@@ -76,7 +76,7 @@ Having accessed an initial URI for the REST application--analogous to a human We
 Web service APIs that adhere to the REST architectural constraints are called **RESTful APIs**. HTTP-based RESTful APIs are defined with the following aspects
 
 - a base URI, such as **http://api.example.com/collection/**
-- standard HTTP methods(e.g. GET, POST, PUT, PATCh and DELETE)
+- standard HTTP methods(e.g. GET, POST, PUT, PATCH and DELETE)
 - a media type that defines state transition data elements(e.g. Atom, microformats, application/vnx.collection+json, etc.). The current representation tells the client how to compose requests for transitions to all the next available application states.
 
 HTTP methods and how the are typically used in a RESTful API:
