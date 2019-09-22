@@ -4,40 +4,34 @@
 
 重要的一点：**使用 HTTP 协议并不等于 RESTful**
 
-通过使用无状态协议（比如 HTTP 协议）和标准化操作（GET，POST 等），RESTful 的系统可以达到以下的优点： 性能更快，稳定性，组件的能在运行时管理和维护
-By using a stateless protocol(usually HTTP) and standard operations, RESTful systems aim for fast performance, reliability, and the ability to grow by reusing components that can be managed and updated without affecting the system as a whole, even while it's running.
+通过使用无状态协议（比如 HTTP 协议）和标准化操作（GET，POST 等），RESTful 的系统有以下优点： 性能更快，稳定性，组件的可重用性、可扩展性和易于维护性。
 
-## Architectural constraints
+## 约束
 
-Six guiding constraints define a RESTful system. These constraints restrict the ways that the server can process a respond to client requests so that, by operating within these constraints, the system gain desirable **non-functional properties**, such as performance, scalabilty, simplicity, modifiability, visibility, portability and reliability. If a system violates any of the required constraints, it cannot be considererd RESTful.
+6 大约束确定一个 RESTful 系统。通过遵循这些约束，系统能够获得一些非功能性的提升，比如性能、可扩展性、易维护性、简洁性、可视化、可移植性以及稳定性。违反了任意约束的系统都不能称之为 RESTful 系统。这六个约束如下：
 
-### Client-server architecture
+### 1. CS 架构
 
-The principle behind the client-server constraints is the separation of concerns. Separating the user interface concerns from the data storage concerns improves the portability of the user interfaces across multiple platforms. It also improves scalability by simplifying the server components. Perhaps most significant to the Web, however, is that the separation allows the components to evolve independently, thus supporting the internet-scale requirement of multiple organizational domains.
+CS 架构背后的概念就是前后端分离。分离用户界面和数据存储会提高多平台前端的可移植性，也会因为服务端组件的简化而提高可扩展性。最重要的是，前后端分离让各个组件能各自维护，从而支持多领域的互联网扩展需求。
 
-A non-RESTful alternative to CS architecture is event-based integration architecture. In this model, each component continuously broadcasts events while listening for pertinent events from other components. These's no one-to-one communication, only broadcasting and eavesdropping. REST requires one-to-one communication, so event-based integration architecture would not be RESTful
+基于事件集成的架构是相对于 CS 架构而言。这种架构中，每个组件都在持续广播事件，同时在监听其他组件的相关事件。它并不是一对一的通信，仅仅是事件的触发和监听。而 REST 则要求一对一的连接，所以基于事件集成的架构并不是 RESTful 的。
 
-### Statelessness
 
-The client-server communication is constrained by no client context being stored on the server between requests. Each request from any client contains all the information necessary to service the request, and the session state is held in the client.
+### 2. 无状态（Statelessness）
 
-Each request is treated as standalone, the server does not remember anything about the user who uses the API
+在每个请求之间，服务器不会保存客户端的上下文。 从客户端发送过来的任何请求都包含了能够处理这次请求的全部信息，并且会话记录是由客户端保存的。
 
-### Cacheability
+### 3. 可缓存性 （Cacheability）
 
-As on World Wide Web, clients and intermediaries can cache responses. Responses must therefore, implicitly or explicitly, define themselves as cacheable or not to prevent clients from getting stale or in appropriate data in response to further requests. Well-managed caching partially or completely eliminates some client-server interactions, further improving scalability and performance.
+与在万维网上一样，客户端可以缓存响应。 因此，响应必须隐式或显式地将自身定义为可缓存或不缓存，以防止客户端响应过时或使用了不适当的数据。 管理良好的缓存部分或完全消除了某些客户端-服务器交互，从而进一步提高了可伸缩性和性能。
 
-### Layered system
+### 4. 层级系统（Layered system）
 
-A client cannot ordinarily tell whether it is connected directly to the end server , or to an intermediary along the way. So if a proxy or load balancer is placed between the client and server, it wouldn't affect their communications and there wouldn't be necessities to update the client or server code.
+客户端不需要知道自己是否是直接连接在终端服务器还是连接着中间件。 如果在客户端和服务器之间放置了代理或负载平衡器，既不会影响它们之间的通信，同时也不需要更新客户端或服务器代码。
 
-Intermediary servers can improve system scalability by enabling load balancing and by procingding shared caches. Also, security can be added as a layer on top of the web services, and then clearly separate business logic from security logic. By adding security as a separate layer enforces security policies. Finally, it also means that a server can call multiple other servers to generate a response to the client.
+中间服务器可以通过启用负载平衡和共享缓存来提高系统可伸缩性。 此外，可以将安全认证作为Web服务之上的一层添加，这样可以将业务逻辑与安全性逻辑明确分开。 增加额外的安全认证可以增强安全性，也可以让一个服务器器控制其他的服务器来响应客户端的请求。
 
-### Code on demand(optional)
-
-Servers can temporarily extend or customize the functionality of a client by transferring executable code
-
-### Uniform interface
+### 5. 统一接口（Uniform interface）                                                                                        
 
 The uniform interface constraint is fundamental to the design of any RESTful system. It simplifies and decouples the architecture, which exables each part to evolve independently. The four constraints for this uniform interface are:
 
@@ -56,6 +50,10 @@ Each message includes enough information to describe how to process the message.
 **Hypermedia as the engine of application state**
 
 Having accessed an initial URI for the REST application--analogous to a human Web user accessing the home page of a website--a REST client should then be able to use server-provided links dynamically to discover all the available actinos and resources it needs. As access proceeds, the server responds with text that includes hyperlinks to other actions that are currently available.
+
+### 6 Code on demand(optional)
+
+Servers can temporarily extend or customize the functionality of a client by transferring executable code
 
 ## Architectural properties
 
