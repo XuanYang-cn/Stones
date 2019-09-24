@@ -16,4 +16,10 @@ OSI, **Open system interconnection model**
 
 ## OSI vs. TCP/IP
 
-![](../pictures/OSI VS TCP_IP.png)
+---
+
+**reference**
+
+[1]. [wikipedia, *OSI_model*](https://en.wikipedia.org/wiki/OSI_model)
+[2]. [wikipedia, *List_of_network_protocols_(OSI_model)*](https://en.wikipedia.org/wiki/List_of_network_protocols_(OSI_model))
+[2]. [wikipedia, *Internet_protocol_suite*](https://en.wikipedia.org/wiki/Internet_protocol_suite)
