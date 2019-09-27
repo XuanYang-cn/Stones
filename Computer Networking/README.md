@@ -7,7 +7,7 @@
 ||||[101] TCP and UDP DETAILS|
 ||[102] OSI DETAILS|||
 |||[103] HTTP DETAILS||
-|[104] HTTP vs. HTTPS||||
+|||[104] HTTP vs. HTTPS||
 |[105] DNS DETAILS||||
 |[106] IP DETAILS||||
 |[107] ARP DETAILS||||
