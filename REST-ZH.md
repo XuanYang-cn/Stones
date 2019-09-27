@@ -4,7 +4,7 @@
 
 重要的一点：**使用 HTTP 协议并不等于 RESTful**
 
-通过使用无状态协议（比如 HTTP 协议）和标准化操作（GET，POST 等），RESTful 的系统有以下优点： 性能更快，稳定性，组件的可重用性、可扩展性和易于维护性。
+通过使用无状态协议（比如 HTTP 协议）µ和标准化操作（GET，POST 等），RESTful 的系统有以下优点： 性能更快，稳定性，组件的可重用性、可扩展性和易于维护性。
 
 ## 约束
 
@@ -31,7 +31,11 @@ CS 架构背后的概念就是前后端分离。分离用户界面和数据存�
 
 中间服务器可以通过启用负载平衡和共享缓存来提高系统可伸缩性。 此外，可以将安全认证作为Web服务之上的一层添加，这样可以将业务逻辑与安全性逻辑明确分开。 增加额外的安全认证可以增强安全性，也可以让一个服务器器控制其他的服务器来响应客户端的请求。
 
-### 5. 统一接口（Uniform interface）                                                                                        
+### 5. 统一接口（Uniform interface）
+
+统一接口约束是设计一个 RESTful 系统最重要的部分。它让会简化系统并让系统的耦合性变低。统一接口的四个部分如下：
+
+               
 
 The uniform interface constraint is fundamental to the design of any RESTful system. It simplifies and decouples the architecture, which exables each part to evolve independently. The four constraints for this uniform interface are:
 
