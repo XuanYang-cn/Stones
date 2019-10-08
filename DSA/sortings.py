@@ -110,7 +110,6 @@ class Sorting:
         cls._quick_sort(nums, 0, len(nums)-1)
 
     @classmethod
-    @time_it
     def merge_sort(cls, nums):
         '''
         Time: O(NlogN)
@@ -122,36 +121,61 @@ class Sorting:
                 we consider it to be sorted by definition
             Merge the subarray to get the final sorted array
         '''
-        return cls._merge_sort(nums)
 
-    @classmethod
-    def _merge_sort(cls, nums):
+        def merge(left, right):
+            i, j, result = 0, 0, []
+
+            while i < len(left) and j < len(right):
+                if left[i] <= right[j]:
+                    result.append(left[i])
+                    i += 1
+                else:
+                    result.append(right[j])
+                    j += 1
+
+            result.extend(left[i:])
+            result.extend(right[j:])
+            return result
+
         if len(nums) <= 1:
             return nums
 
         middle = len(nums) // 2
-        left = cls._merge_sort(nums[:middle])
-        right = cls._merge_sort(nums[middle:])
+        left = cls.merge_sort(nums[:middle])
+        right = cls.merge_sort(nums[middle:])
 
-        return cls._merge(left, right)
+        return merge(left, right)
 
     @classmethod
-    def _merge(cls, left, right):
-        i = 0
-        j = 0
-        result = []
+    @time_it
+    def heapsort(cls, array):
+        def sink(array, index, upto):
 
-        while i < len(left) and j < len(right):
-            if left[i] <= right[j]:
-                result.append(left[i])
-                i += 1
-            else:
-                result.append(right[j])
-                j += 1
+            while index <= upto:
+                left = index * 2 + 1
+                right = index * 2 + 2
+                k = index
+                if left <= upto:
+                    if right <= upto and array[right] < array[left]:
+                        k = right
+                    else:
+                        k = left
+                if array[index] > array[k]:
+                    array[index], array[k] = array[k], array[index]
+                    index = k
+                else:
+                    break
 
-        result.extend(left[i:])
-        result.extend(right[j:])
+        for i in range((len(array) - 1)//2, -1, -1):
+            sink(array, i, len(array) - 1)
 
+        result, upto = [], len(array) - 1
+        for i in range(len(array)):
+            result.append(array[0])
+            array[0], array[upto] = array[upto], array[0]
+
+            upto -= 1
+            sink(array, 0, upto)
         return result
 
 
@@ -192,6 +216,10 @@ def tests():
     # Test merge sort
     test_nums04 = gen(100)
     assert is_sorted(Sorting.merge_sort(test_nums04))
+
+    # Test heap sort
+    test_nums05 = gen(100)
+    assert is_sorted(Sorting.heapsort(test_nums05))
     
 if __name__ == '__main__':
     tests()
