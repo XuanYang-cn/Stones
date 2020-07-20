@@ -1,19 +1,18 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=/Library/Frameworks/Python.framework/Versions/3.6/bin:$HOME/bin:/usr/local/bin:$PATH
-# export PATH=/usr/local/opt/python/libexec/bin:/usr/local/sbin:$PATH
+ # If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/othert/.oh-my-zsh"
+export ZSH="/home/yangxuan/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="agnoster"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
+# a theme from this variable instead of looking in $ZSH/themes/
 # If set to an empty array, this variable will have no effect.
 # ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
 
@@ -65,14 +64,13 @@ ZSH_THEME="agnoster"
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
 # Which plugins would you like to load?
-# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Standard plugins can be found in $ZSH/plugins/
+# Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(
-git
-history-search-multi-word
-)
+plugins=(git
+    history-search-multi-word)
+
 
 source $ZSH/oh-my-zsh.sh
 
@@ -102,8 +100,14 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 DEFAULT_USER=$USER
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-export WORKON_HOME="~/.virtualenvs"
-export VIRTUALENVWRAPPER_PYTHON=/Library/Frameworks/Python.framework/Versions/3.6/bin/python3
+alias vi=vim
+# source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# export WORKON_HOME="~/.virtualenvs"
+# export VIRTUALENVWRAPPER_PYTHON=/Library/Frameworks/Python.framework/Versions/3.6/bin/python3
+export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3.7
 export PROJECT_HOME=$HOME/Develop
-source /Library/Frameworks/Python.framework/Versions/3.6/bin/virtualenvwrapper.sh
+source /home/yangxuan/.local/bin/virtualenvwrapper.sh
+# source /Library/Frameworks/Python.framework/Versions/3.6/bin/virtualenvwrapper.sh
+# 
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/milib
+source xmodmap ~/.xmodmap

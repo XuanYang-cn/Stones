@@ -1,6 +1,7 @@
 " Center view on the search result
 noremap n nzz
 noremap N Nzz
+noremap <Leader>o <C-o>
 
 set hlsearch
 noremap <F8> :nohl<CR>
@@ -15,7 +16,7 @@ set backspace=2
 call plug#begin('~/.vim/plugged')
 
 "auto complete codes
-" Plug 'Valloric/YouCompleteMe'
+Plug 'ycm-core/YouCompleteMe'
 
 " audo complete pairs
 Plug 'jiangmiao/auto-pairs'
@@ -32,6 +33,8 @@ Plug 'iamcco/markdown-preview.vim'
 " schema color
 Plug 'morhetz/gruvbox'
 
+Plug 'presevim/nerdtree'
+
 " simplefold
 Plug 'tmhedberg/SimpylFold'
 
@@ -46,15 +49,29 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'zxqfl/tabnine-vim'
 call plug#end()
 
+nmap <F2> :NERDTreeToggle<cr>
+
 " ale
-let g:ale_fix_on_save = 1
-let g:ale_completion_enabled = 1
+let g:ale_fix_on_save = 0
+" let g:ale_lint_on_text_change = 'normal'
+let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_enter = 0
+let g:ale_echo_cursor = 1
+" let g:ale_completion_enabled = 1
 let g:ale_sign_column_always = 1
 let g:airline#extensions#ale#enabled = 1
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-let g:ale_linters = {'python': ['flake8']}
+let g:ale_linters = {'python': ['flake8'],
+            \ 'go': ['gofmt', 'golint', 'go vet'],
+            \        'zsh':['shell'],
+            \        'cpp':['cpplint']}
+ " let g:ale_fixers={
+ " \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+ " \ 'cpp': ['clang-format']}
+nmap <silent> <leader>k <Plug>(ale_previous_wrap)
+nmap <silent> <leader>j <Plug>(ale_next_wrap)
 
 " gruvbox
 colorscheme gruvbox
@@ -65,6 +82,7 @@ let g:SimpylFold_docstring_preview = 1
 
 " YouCompleteMe
 let g:ycm_autoclose_preview_window_after_completion=1
+let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
 map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 map <leader>mp :MarkdownPreview<CR>
 
@@ -86,6 +104,8 @@ set foldmethod=indent
 set foldlevel=99
 
 " set encoding
+set colorcolumn=110
+highlight ColorColumn ctermbg=darkgray
 set encoding=utf-8
 "press space to fold/unfold code
 nnoremap <F9> za
@@ -102,6 +122,13 @@ noremap <Leader>p "*p
 noremap <Leader>Y "+y
 noremap <Leader>P "+p
 
+" c++ settings
+" :make to make
+set makeprg=make\ -C\ ../build\ -j12
+nnoremap <F4> :make!<cr>
+
+
+"
 " NerdComment
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1
@@ -125,5 +152,7 @@ let g:NERDCommentEmptyLines = 1
 " Enable trimming of trailing whitespace when uncommenting
 let g:NERDTrimTrailingWhitespace = 1
 
-" Enable NERDCommenterToggle to check all selected lines is commented or not 
+" Enable NERDCommenterToggle to check all selected lines is commented or not
 let g:NERDToggleCheckAllLines = 1"
+
+vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
