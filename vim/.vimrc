@@ -33,7 +33,7 @@ Plug 'iamcco/markdown-preview.vim'
 " schema color
 Plug 'morhetz/gruvbox'
 
-Plug 'presevim/nerdtree'
+Plug 'preservim/nerdtree'
 
 " simplefold
 Plug 'tmhedberg/SimpylFold'
