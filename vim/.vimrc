@@ -33,7 +33,8 @@ Plug 'iamcco/markdown-preview.vim'
 " schema color
 Plug 'morhetz/gruvbox'
 
-Plug 'preservim/nerdtree'
+" Plug 'presevim/nerdtree'
+Plug 'https://github.com/preservim/nerdtree.git'
 
 " simplefold
 Plug 'tmhedberg/SimpylFold'
@@ -46,30 +47,35 @@ Plug 'vim-airline/vim-airline'
 " Auto comment
 Plug 'scrooloose/nerdcommenter'
 
+" 
 Plug 'zxqfl/tabnine-vim'
+
+" Git runtime
+Plug 'airblade/vim-gitgutter'
 call plug#end()
 
 nmap <F2> :NERDTreeToggle<cr>
 
 " ale
 let g:ale_fix_on_save = 0
-" let g:ale_lint_on_text_change = 'normal'
+let g:ale_lint_on_text_change = 'normal'
 let g:ale_lint_on_insert_leave = 0
 let g:ale_lint_on_enter = 0
 let g:ale_echo_cursor = 1
-" let g:ale_completion_enabled = 1
+let g:ale_completion_enabled = 1
 let g:ale_sign_column_always = 1
 let g:airline#extensions#ale#enabled = 1
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:syntastic_python_flake8_args='--ignore=E501'
 let g:ale_linters = {'python': ['flake8'],
             \ 'go': ['gofmt', 'golint', 'go vet'],
             \        'zsh':['shell'],
             \        'cpp':['cpplint']}
- " let g:ale_fixers={
- " \ '*': ['remove_trailing_lines', 'trim_whitespace'],
- " \ 'cpp': ['clang-format']}
+ let g:ale_fixers={
+ \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+ \ 'cpp': ['clang-format']}
 nmap <silent> <leader>k <Plug>(ale_previous_wrap)
 nmap <silent> <leader>j <Plug>(ale_next_wrap)
 
