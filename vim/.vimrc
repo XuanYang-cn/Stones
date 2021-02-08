@@ -3,10 +3,14 @@ noremap n nzz
 noremap N Nzz
 noremap <Leader>o <C-o>
 
+noremap <Leader>= :res +10<CR>
+noremap <Leader>- :res -10<CR>
+noremap <Leader>, :vertical resize -10<CR>
+noremap <Leader>. :vertical resize +10<CR>
+
 set hlsearch
 noremap <F8> :nohl<CR>
 inoremap <F8> :nohl<CR>a
-
 set ignorecase
 set smartcase
 set backspace=2
@@ -14,9 +18,6 @@ set backspace=2
 " Plugs
 
 call plug#begin('~/.vim/plugged')
-
-" grammar
-Plug 'rhysd/vim-grammarous'
 
 "auto complete codes
 Plug 'ycm-core/YouCompleteMe'
@@ -59,6 +60,10 @@ Plug 'zxqfl/tabnine-vim'
 
 " Git runtime
 Plug 'airblade/vim-gitgutter'
+
+" vim-go
+Plug 'fatih/vim-go'
+
 call plug#end()
 
 nmap <F2> :NERDTreeToggle<cr>
@@ -72,8 +77,9 @@ nmap <F5> <Plug>(grammarous-move-to-next-error)
 
 
 " ale
-let g:ale_lint_on_text_change = 'normal'
-let g:ale_lint_on_insert_leave = 1
+let g:ale_lint_file = 0
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_insert_leave = 0
 let g:ale_lint_on_enter = 0
 
 let g:ale_echo_cursor = 1
@@ -84,19 +90,23 @@ let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:syntastic_python_flake8_args='--ignore=E501'
-let g:ale_fix_on_save = 0
+let g:ale_fix_on_save = 1
 let g:ale_linters = {
 \   'python': ['flake8'],
-\   'go': ['gofmt', 'golint', 'go vet'],
 \   'zsh':['shell'],
 \   'cpp':['clang-format'],
 \   'markdown':['markdownlint'],
 \}
- " let g:ale_fixers={
+" let g:ale_go_golangci_lint_options = '--config $HOME/Github/GO/milvus/.golangci.yml'
+ let g:ale_fixers={
+ \ 'cpp': ['clang-format'],
+ \ 'go' : ['gofmt'] }
  " \ '*': ['remove_trailing_lines', 'trim_whitespace'],
- " \ 'cpp': ['clang-format']}
 nmap <silent> gk <Plug>(ale_previous_wrap)
 nmap <silent> gj <Plug>(ale_next_wrap)
+
+let g:go_def_mode='gopls'
+let g:go_info_mode='gopls'
 
 " gruvbox
 colorscheme gruvbox
@@ -191,3 +201,18 @@ let g:NERDTrimTrailingWhitespace = 1
 let g:NERDToggleCheckAllLines = 1"
 
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
+
+" vim-go
+let g:go_debug_windows = {
+          \ 'vars':       'rightbelow 70vnew',
+\ }
+let g:go_debug_preserve_layout = 1
+let g:go_debug_mappings = {
+   \ '(go-debug-continue)':   {'key': 'c'},
+   \ '(go-debug-print)':      {'key': 'p'},
+   \ '(go-debug-breakpoint)': {'key': 'b'},
+   \ '(go-debug-next)':       {'key': 'n'},
+   \ '(go-debug-step)':       {'key': 's'},
+   \ '(go-debug-halt)':       {'key': 'h'},
+\ }
+let g:go_highlight_debug = 0
