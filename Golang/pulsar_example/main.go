@@ -8,7 +8,9 @@ import (
 	_ "net/http/pprof"
 	"os"
 	"os/signal"
+	"reflect"
 	"syscall"
+	"unsafe"
 )
 
 func main() {
@@ -51,12 +53,15 @@ func main() {
 		pc.Close()
 
 		client.Close()
+		f := reflect.ValueOf(client).Elem().FieldByName("cnxPool")
+		f = reflect.NewAt(f.Type(), unsafe.Pointer(f.UnsafeAddr())).Elem()
+		f.MethodByName("Close").Call(nil)
 	}
 
 	sc := make(chan os.Signal, 1)
 
 	go func() {
-		for i := 0; i < 1; i++ {
+		for i := 0; i < 10000; i++ {
 			newClient()
 		}
 	}()
