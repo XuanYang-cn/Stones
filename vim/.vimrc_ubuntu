@@ -1,0 +1,246 @@
+set nocompatible
+" Center view on the search result
+noremap n nzz
+noremap N Nzz
+
+" Resize buffer
+noremap <Leader>= :res +10<CR>
+noremap <Leader>- :res -10<CR>
+noremap <Leader>, :vertical resize -10<CR>
+noremap <Leader>. :vertical resize +10<CR>
+
+" replace auto-pair, it's too agressive
+inoremap (, (<CR>)<C-c>O
+inoremap {, {<CR>}<C-c>O
+inoremap {; {<CR>};<C-c>O
+inoremap [, [<CR>]<C-c>O
+
+inoremap < <><C-c>i
+inoremap " ""<C-c>i
+inoremap ' ''<C-c>i
+
+" highlight search
+set hlsearch
+noremap <F8> :nohl<CR>
+inoremap <F8> :nohl<CR>a
+
+set ignorecase
+set smartcase
+set backspace=2
+set updatetime=100
+filetype plugin indent on
+syntax on
+set nu
+
+set expandtab
+set tabstop=4
+set shiftwidth=4
+
+" shutdown beep in vim
+set noeb vb t_vb=
+set t_TE=
+set t_TI=
+
+" enable fold
+set foldenable
+set foldmethod=indent
+set foldlevel=99
+
+" set encoding
+set colorcolumn=110
+highlight ColorColumn ctermbg=darkgray
+set encoding=utf-8
+set termencoding=utf-8
+set fileencoding=utf-8
+
+"press F9 to fold/unfold code
+nnoremap <F9> za
+vnoremap <F9> zf
+
+" split navigation
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+" Only if vim is install with +clipboard
+noremap <Leader>y "*y
+noremap <Leader>p "*p
+noremap <Leader>Y "+y
+noremap <Leader>P "+p
+
+"search select
+vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
+nnoremap // yiw/\V<C-R>=escape(@",'/\')<CR><CR>
+
+" Plugs
+call plug#begin('~/.vim/plugged')
+
+"auto complete codes
+Plug 'ycm-core/YouCompleteMe'
+
+" auto complete pairs
+" Plug 'jiangmiao/auto-pairs'
+
+" Grammer
+Plug 'w0rp/ale'
+
+" Markdown grammer and preview
+Plug 'iamcco/mathjax-support-for-mkdp'
+Plug 'iamcco/markdown-preview.vim'
+
+" rst support
+Plug 'Rykka/riv.vim'
+Plug 'Rykka/InstantRst'
+
+" schema color
+Plug 'morhetz/gruvbox'
+
+Plug 'preservim/nerdtree'
+
+" simplefold
+Plug 'tmhedberg/SimpylFold'
+
+" Jump
+Plug 'Yggdroot/LeaderF', {'do': ':LeaderfInstallCExtension'}
+
+Plug 'vim-airline/vim-airline'
+
+" Auto comment
+Plug 'preservim/nerdcommenter'
+
+" Powerful but charged o ^ o
+" Plug 'codota/tabnine-vim'
+
+" Git runtime
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+
+call plug#end()
+
+nmap <F2> :NERDTreeToggle<cr>
+
+" ale linter
+let g:ale_linters_explicit = 1
+let g:ale_lint_on_text_changed = 'normal'
+let g:ale_lint_on_insert_leave = 1
+let g:ale_lint_on_enter = 0
+let g:ale_lint_delay = 500
+let g:ale_completion_delay = 500
+let g:ale_echo_delay = 20
+
+let g:ale_echo_cursor = 1
+let g:ale_completion_enabled = 1
+let g:ale_sign_column_always = 1
+let g:airline#extensions#ale#enabled = 1
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:syntastic_python_flake8_args='--ignore=E501'
+let g:ale_fix_on_save = 1
+let g:ale_linters = {
+\   'python': ['flake8'],
+\   'zsh':['shell'],
+\   'cpp':['clang-format'],
+\   'go':['golangci-lint'],
+\}
+
+ let g:ale_fixers={
+ \ 'cpp': ['clang-format'],
+ \ 'go' : ['gofmt'],
+ \ 'python': ['remove_trailing_lines', 'trim_whitespace'],
+ \}
+
+" gruvbox
+colorscheme gruvbox
+set background=dark
+
+" simplefold
+let g:SimpylFold_docstring_preview = 1
+
+" YouCompleteMe
+let g:ycm_autoclose_preview_window_after_completion=1
+let g:ycm_min_num_identifier_candidate_chars = 2
+let g:ycm_add_proview_to_completeopt = 0
+let g:ycm_show_diagnostics_ui = 0
+let g:ycm_server_log_level = 'info'
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_complete_in_strings = 1
+let g:ycm_key_invoke_completion = '<cr>'
+let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
+let g:ycm_semantic_triggers =  {
+			\ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
+			\ 'cs,lua,javascript': ['re!\w{2}'],
+			\ }
+let g:ycm_filetype_whitelist = {
+			\ "c":1,
+			\ "cpp":1,
+			\ "objc":1,
+            \ "go":1,
+            \ "python":1,
+			\ "sh":1,
+			\ "zsh":1,
+			\ }
+map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+
+" Markdown
+map <leader>mp :MarkdownPreview<CR>
+
+" rst
+map <leader>rp :InstantRst!<CR>
+map <leader>rs :StopInstantRst!<CR>
+let g:instant_rst_browser='chrome'
+
+
+
+" NerdComment
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 1
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
+" Set a language to use its alternate delimiters by default
+let g:NERDAltDelims_java = 1
+" Add your own custom formats or override the defaults
+let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/'  }  }
+" Allow commenting and inverting empty lines (useful when commenting a region)
+let g:NERDCommentEmptyLines = 1
+" Enable trimming of trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1
+" Enable NERDCommenterToggle to check all selected lines is commented or not
+let g:NERDToggleCheckAllLines = 1"
+
+
+" leaderf
+" cache in $HOME/.LfCache/gtags
+let g:Lf_GtagsAutoGenerate = 1
+" let g:Lf_Gtagsconf = '/usr/local/share/gtags/gtags.conf'
+let g:Lf_Gtagslabel = 'native-pygments'
+"reference
+noremap <leader>fr :<C-U><C-R>=printf("Leaderf! gtags -r %s --auto-jump", expand("<cword>"))<CR><CR>
+"definition
+noremap <leader>fd :<C-U><C-R>=printf("Leaderf! gtags -d %s --auto-jump", expand("<cword>"))<CR><CR>
+noremap <leader>fo :<C-U><C-R>=printf("Leaderf! gtags --recall %s", "")<CR><CR>
+noremap <leader>fn :<C-U><C-R>=printf("Leaderf gtags --next %s", "")<CR><CR>
+noremap <leader>fp :<C-U><C-R>=printf("Leaderf gtags --previous %s", "")<CR><CR>
+
+let g:Lf_ShortcutF = '<c-p>'
+noremap <c-n> :LeaderfMru<cr>
+noremap <leader>ff :LeaderfFunction!<cr>
+noremap <leader>fb :LeaderfBuffer<cr>
+let g:Lf_StlSeparator = { 'left': "\ue0b0", 'right': "\ue0b2", 'font': "DejaVu Sans Mono for Powerline" }
+
+let g:Lf_RootMarkers = ['.project', '.root', '.svn', '.git']
+let g:Lf_WorkingDirectoryMode = 'Ac'
+let g:Lf_WindowHeight = 0.30
+let g:Lf_ShowRelativePath = 0
+let g:Lf_HideHelp = 1
+let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
+let g:Lf_WindowPosition = 'popup'
+let g:Lf_previewInPopup = 1
+let g:Lf_ShowDevIcons = 0
+" search visually selected text literally
+xnoremap gf :<C-U><C-R>=printf("Leaderf! rg -F -e %s ", leaderf#Rg#visual())<CR>
+noremap go :<C-U>Leaderf! rg --recall<CR>
+
