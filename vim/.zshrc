@@ -101,13 +101,9 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 DEFAULT_USER=$USER
 alias vi=vim
-# source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-# export WORKON_HOME="~/.virtualenvs"
-# export VIRTUALENVWRAPPER_PYTHON=/Library/Frameworks/Python.framework/Versions/3.6/bin/python3
 export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3.7
 export PROJECT_HOME=$HOME/Develop
 source /home/yangxuan/.local/bin/virtualenvwrapper.sh
-# source /Library/Frameworks/Python.framework/Versions/3.6/bin/virtualenvwrapper.sh
-# 
+
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/milib
 source xmodmap ~/.xmodmap

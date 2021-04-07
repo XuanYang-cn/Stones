@@ -38,7 +38,7 @@ Change default shell:
 chsh -s $(which zsh)
 ```
 
-Test with: 
+Test with:
 ```shell
 $SHELL --version
 ```
@@ -60,26 +60,20 @@ So remember to copy my own `.zshrc` AFTER downloading oh-my-zsh.
 
 Oh-my-zsh has so many [themes](https://github.com/ohmyzsh/ohmyzsh/wiki/Themes) and [plugins](https://github.com/ohmyzsh/ohmyzsh/wiki/Plugins).
 
-**Themes:**
+**Themes:** [powerlevel10k](https://github.com/romkatv/powerlevel10k#oh-my-zsh)
 
-I currently use `agnoster` with powerline and powerline fonts with username hidden(works perfectly well on macOS and Ubuntu).
+**Plugins:** [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting),[history-search-multi-word](https://github.com/zdharma/history-search-multi-word)
 
-If username cannot be hidden or `angoster` with powerline fonts are tideously ugly(due to ugly terminal), I will use `af-magic`
+Forget about how they should be installed on their readme, just clone these repositories into `~/.oh-my-zsh/plugins`,
+and add their repository name into `~/.zshrc` `plugin`
 
-
-**powerline & powerline fonts**
-
-```shell
-# downloading powerline
-pip3 install powerline-status
 ```
-
-```shell
-# downloading powerline fonts on ubuntu
-# Other platform may need to be built from source
-sudo apt install fonts-powerline
+plugins=(
+    git
+    zsh-syntax-highlighting
+    history-search-multi-word
+)
 ```
-Here is how to install fonts other paltform [powerline-fonts](https://github.com/powerline/fonts)
 
 ### 2.5 Setup environment
 
@@ -88,20 +82,16 @@ Here is how to install fonts other paltform [powerline-fonts](https://github.com
 #### Download cmake
 
 ## 3. Setup vim
-- [Build vim from source](https://www.vim.org/git.php)
-
 ### 3.1 Download vim
-#### Add vim ubuntu apt source
-#### Download vim >= 8.2
-
 ### 3.2 configure plugs for vim
 #### Install plug
 - [Download](https://github.com/junegunn/vim-plug) `plug.vim` and put it in the `autoload` directory
 ```shell
 # Unix
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim 
+https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 ```
 #### :PlugInstall
 #### Compile YouCompleteMe
+#### Download gtags and ripgrep
 

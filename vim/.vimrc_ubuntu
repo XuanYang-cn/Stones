@@ -1,4 +1,6 @@
+" Don't act like vi
 set nocompatible
+
 " Center view on the search result
 noremap n nzz
 noremap N Nzz
@@ -9,15 +11,17 @@ noremap <Leader>- :res -10<CR>
 noremap <Leader>, :vertical resize -10<CR>
 noremap <Leader>. :vertical resize +10<CR>
 
-" replace auto-pair, it's too agressive
-inoremap (, (<CR>)<C-c>O
-inoremap {, {<CR>}<C-c>O
+" replace auto-pairs, it's too agressive
+inoremap (<CR> (<CR>)<C-c>O
+inoremap {<CR> {<CR>}<C-c>O
+inoremap [<CR> [<CR>]<C-c>O
 inoremap {; {<CR>};<C-c>O
-inoremap [, [<CR>]<C-c>O
+inoremap () ()<C-c>i
+inoremap {} {}<C-c>i
+inoremap [] []<C-c>i
 
 inoremap < <><C-c>i
 inoremap " ""<C-c>i
-inoremap ' ''<C-c>i
 
 " highlight search
 set hlsearch
@@ -26,11 +30,14 @@ inoremap <F8> :nohl<CR>a
 
 set ignorecase
 set smartcase
+
+" important
 set backspace=2
-set updatetime=100
 filetype plugin indent on
+
 syntax on
 set nu
+set updatetime=100
 
 set expandtab
 set tabstop=4
@@ -78,9 +85,6 @@ call plug#begin('~/.vim/plugged')
 
 "auto complete codes
 Plug 'ycm-core/YouCompleteMe'
-
-" auto complete pairs
-" Plug 'jiangmiao/auto-pairs'
 
 " Grammer
 Plug 'w0rp/ale'
@@ -161,12 +165,11 @@ let g:SimpylFold_docstring_preview = 1
 " YouCompleteMe
 let g:ycm_autoclose_preview_window_after_completion=1
 let g:ycm_min_num_identifier_candidate_chars = 2
-let g:ycm_add_proview_to_completeopt = 0
+let g:ycm_add_preview_to_completeopt = 0
 let g:ycm_show_diagnostics_ui = 0
 let g:ycm_server_log_level = 'info'
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_complete_in_strings = 1
-let g:ycm_key_invoke_completion = '<cr>'
 let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
 let g:ycm_semantic_triggers =  {
 			\ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
@@ -180,6 +183,9 @@ let g:ycm_filetype_whitelist = {
             \ "python":1,
 			\ "sh":1,
 			\ "zsh":1,
+            \ "cmake":1,
+            \ "md":1,
+            \ "vim":1,
 			\ }
 map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
@@ -242,5 +248,6 @@ let g:Lf_previewInPopup = 1
 let g:Lf_ShowDevIcons = 0
 " search visually selected text literally
 xnoremap gf :<C-U><C-R>=printf("Leaderf! rg -F -e %s ", leaderf#Rg#visual())<CR>
+noremap ge :Leaderf! rg -F -e 
 noremap go :<C-U>Leaderf! rg --recall<CR>
 
