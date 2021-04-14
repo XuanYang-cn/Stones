@@ -20,7 +20,6 @@ inoremap () ()<C-c>i
 inoremap {} {}<C-c>i
 inoremap [] []<C-c>i
 
-inoremap < <><C-c>i
 inoremap " ""<C-c>i
 
 " highlight search
@@ -247,7 +246,28 @@ let g:Lf_WindowPosition = 'popup'
 let g:Lf_previewInPopup = 1
 let g:Lf_ShowDevIcons = 0
 " search visually selected text literally
-xnoremap gf :<C-U><C-R>=printf("Leaderf! rg -F -e %s ", leaderf#Rg#visual())<CR>
-noremap ge :Leaderf! rg -F -e 
-noremap go :<C-U>Leaderf! rg --recall<CR>
-
+xnoremap gf :<C-U><C-R>=printf("Leaderf rg -F -e %s ", leaderf#Rg#visual())<CR>
+noremap ge :Leaderf rg -F -e 
+noremap go :<C-U>Leaderf rg --recall<CR>
+let g:Lf_PopupPalette = {
+    \  'dark': {
+    \      'Lf_hl_match': {
+    \                'gui': 'NONE',
+    \                'font': 'NONE',
+    \                'guifg': 'NONE',
+    \                'guibg': 'NONE',
+    \                'cterm': 'bold',
+    \                'ctermfg': '167',
+    \                'ctermbg': '236'
+    \              },
+    \      'Lf_hl_cursorline': {
+    \                'gui': 'NONE',
+    \                'font': 'NONE',
+    \                'guifg': 'NONE',
+    \                'guibg': 'NONE',
+    \                'cterm': 'NONE',
+    \                'ctermfg': '10',
+    \                'ctermbg': '236'
+    \              },
+    \      },
+    \}
