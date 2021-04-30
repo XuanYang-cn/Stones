@@ -119,6 +119,9 @@ Plug 'preservim/nerdcommenter'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 
+" Vim todo
+Plug 'vuciv/vim-bujo'
+
 call plug#end()
 
 nmap <F2> :NERDTreeToggle<cr>
@@ -243,7 +246,7 @@ let g:Lf_ShowRelativePath = 0
 let g:Lf_HideHelp = 1
 let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
 let g:Lf_WindowPosition = 'popup'
-let g:Lf_previewInPopup = 1
+let g:Lf_PreviewInPopup = 1
 let g:Lf_ShowDevIcons = 0
 " search visually selected text literally
 xnoremap gf :<C-U><C-R>=printf("Leaderf rg -F -e %s ", leaderf#Rg#visual())<CR>
@@ -271,3 +274,8 @@ let g:Lf_PopupPalette = {
     \              },
     \      },
     \}
+
+nmap <C-S> <Plug>BujoAddnormal
+imap <C-S> <Plug>BujoAddinsert
+nmap <C-Q> <Plug>BujoChecknormal
+imap <C-Q> <Plug>BujoCheckinsert
