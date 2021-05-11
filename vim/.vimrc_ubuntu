@@ -11,17 +11,6 @@ noremap <Leader>- :res -10<CR>
 noremap <Leader>, :vertical resize -10<CR>
 noremap <Leader>. :vertical resize +10<CR>
 
-" replace auto-pairs, it's too agressive
-inoremap (<CR> (<CR>)<C-c>O
-inoremap {<CR> {<CR>}<C-c>O
-inoremap [<CR> [<CR>]<C-c>O
-inoremap {; {<CR>};<C-c>O
-inoremap () ()<C-c>i
-inoremap {} {}<C-c>i
-inoremap [] []<C-c>i
-
-inoremap " ""<C-c>i
-
 " highlight search
 set hlsearch
 noremap <F8> :nohl<CR>
@@ -112,15 +101,15 @@ Plug 'vim-airline/vim-airline'
 " Auto comment
 Plug 'preservim/nerdcommenter'
 
-" Powerful but charged o ^ o
-" Plug 'codota/tabnine-vim'
+" Auto Pair
+Plug 'jiangmiao/auto-pairs'
 
 " Git runtime
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 
 " Vim todo
-Plug 'vuciv/vim-bujo'
+Plug 'XuanYang-cn/vim-bujo'
 
 call plug#end()
 
@@ -279,3 +268,4 @@ nmap <C-S> <Plug>BujoAddnormal
 imap <C-S> <Plug>BujoAddinsert
 nmap <C-Q> <Plug>BujoChecknormal
 imap <C-Q> <Plug>BujoCheckinsert
+let g:bujo#window_width = 80
