@@ -1,10 +1,6 @@
 " Don't act like vi
 set nocompatible
 
-" Center view on the search result
-noremap n nzz
-noremap N Nzz
-
 " Resize buffer
 noremap <Leader>= :res +10<CR>
 noremap <Leader>- :res -10<CR>
@@ -66,13 +62,16 @@ noremap <Leader>P "+p
 
 "search select
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
-nnoremap // yiw/\V<C-R>=escape(@",'/\')<CR><CR>
 
 " Plugs
 call plug#begin('~/.vim/plugged')
 
 "auto complete codes
 Plug 'ycm-core/YouCompleteMe'
+
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+Plug 'piec/vim-lsp-gopls'
 
 " Grammer
 Plug 'w0rp/ale'
@@ -131,13 +130,13 @@ let g:airline#extensions#ale#enabled = 1
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-let g:syntastic_python_flake8_args='--ignore=E501'
+let g:ale_python_flake8_options = '--ignore=E501'
 let g:ale_fix_on_save = 1
 let g:ale_linters = {
 \   'python': ['flake8'],
 \   'zsh':['shell'],
 \   'cpp':['clang-format'],
-\   'go':['golangci-lint'],
+\   'go':['golangci-lint', 'govet', 'golint'],
 \}
 
  let g:ale_fixers={
@@ -163,22 +162,24 @@ let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_complete_in_strings = 1
 let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
 let g:ycm_semantic_triggers =  {
-			\ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
-			\ 'cs,lua,javascript': ['re!\w{2}'],
-			\ }
+    \ 'c,cpp,python,java,go,erlang,perl': ['re!\w{2}'],
+    \ 'cs,lua,javascript': ['re!\w{2}'],
+\ }
+
 let g:ycm_filetype_whitelist = {
-			\ "c":1,
-			\ "cpp":1,
-			\ "objc":1,
-            \ "go":1,
-            \ "python":1,
-			\ "sh":1,
-			\ "zsh":1,
-            \ "cmake":1,
-            \ "md":1,
-            \ "vim":1,
-			\ }
-map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+    \ "c":1,
+    \ "cpp":1,
+    \ "objc":1,
+    \ "go":1,
+    \ "python":1,
+    \ "sh":1,
+    \ "zsh":1,
+    \ "cmake":1,
+    \ "md":1,
+    \ "vim":1,
+\ }
+"
+" map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
 " Markdown
 map <leader>mp :MarkdownPreview<CR>
@@ -227,6 +228,28 @@ noremap <c-n> :LeaderfMru<cr>
 noremap <leader>ff :LeaderfFunction!<cr>
 noremap <leader>fb :LeaderfBuffer<cr>
 let g:Lf_StlSeparator = { 'left': "\ue0b0", 'right': "\ue0b2", 'font': "DejaVu Sans Mono for Powerline" }
+let g:Lf_PopupPalette = {
+    \  'light': {
+    \      'Lf_hl_match': {
+    \                'gui': 'NONE',
+    \                'font': 'NONE',
+    \                'guifg': 'NONE',
+    \                'guibg': '#303136',
+    \                'cterm': 'NONE',
+    \                'ctermfg': 'NONE',
+    \                'ctermbg': '236'
+    \              },
+    \      'Lf_hl_cursorline': {
+    \                'gui': 'NONE',
+    \                'font': 'NONE',
+    \                'guifg': 'NONE',
+    \                'guibg': '#303136',
+    \                'cterm': 'NONE',
+    \                'ctermfg': 'NONE',
+    \                'ctermbg': '236'
+    \              },
+    \      },
+    \}
 
 let g:Lf_RootMarkers = ['.project', '.root', '.svn', '.git']
 let g:Lf_WorkingDirectoryMode = 'Ac'
@@ -236,36 +259,98 @@ let g:Lf_HideHelp = 1
 let g:Lf_PreviewResult = {'Function':0, 'BufTag':0}
 let g:Lf_WindowPosition = 'popup'
 let g:Lf_PreviewInPopup = 1
+let g:Lf_PreviewResult = {'Rg': 1 }
 let g:Lf_ShowDevIcons = 0
 " search visually selected text literally
 xnoremap gf :<C-U><C-R>=printf("Leaderf rg -F -e %s ", leaderf#Rg#visual())<CR>
-noremap ge :Leaderf rg -F -e 
+noremap ge :Leaderf rg -F -e
 noremap go :<C-U>Leaderf rg --recall<CR>
-let g:Lf_PopupPalette = {
-    \  'dark': {
-    \      'Lf_hl_match': {
-    \                'gui': 'NONE',
-    \                'font': 'NONE',
-    \                'guifg': 'NONE',
-    \                'guibg': 'NONE',
-    \                'cterm': 'bold',
-    \                'ctermfg': '167',
-    \                'ctermbg': '236'
-    \              },
-    \      'Lf_hl_cursorline': {
-    \                'gui': 'NONE',
-    \                'font': 'NONE',
-    \                'guifg': 'NONE',
-    \                'guibg': 'NONE',
-    \                'cterm': 'NONE',
-    \                'ctermfg': '10',
-    \                'ctermbg': '236'
-    \              },
-    \      },
-    \}
 
+"bujo
 nmap <C-S> <Plug>BujoAddnormal
 imap <C-S> <Plug>BujoAddinsert
 nmap <C-Q> <Plug>BujoChecknormal
 imap <C-Q> <Plug>BujoCheckinsert
 let g:bujo#window_width = 80
+
+"vim-lsp
+if executable('pyls')
+    " pip install python-language-server
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'pyls',
+        \ 'cmd': {server_info->['pyls']},
+        \ 'allowlist': ['python'],
+        \ })
+endif
+" go
+if executable('gopls')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'gopls',
+        \ 'cmd': {server_info->['gopls']},
+        \ 'allowlist': ['go'],
+        \ })
+endif
+"bash
+if executable('bash-language-server')
+  augroup LspBash
+    autocmd!
+    autocmd User lsp_setup call lsp#register_server({
+          \ 'name': 'bash-language-server',
+          \ 'cmd': {server_info->[&shell, &shellcmdflag, 'bash-language-server start']},
+          \ 'allowlist': ['sh'],
+          \ })
+  augroup END
+endif
+" Register ccls C++ lanuage server.
+if executable('ccls')
+   au User lsp_setup call lsp#register_server({
+      \ 'name': 'ccls',
+      \ 'cmd': {server_info->['ccls']},
+      \ 'root_uri': {server_info->lsp#utils#path_to_uri(lsp#utils#find_nearest_parent_file_directory(lsp#utils#get_buffer_path(), 'compile_commands.json'))},
+      \ 'initialization_options': {'cache': {'directory': expand('~/.cache/ccls') }},
+      \ 'allowlist': ['c', 'cpp', 'objc', 'objcpp', 'cc'],
+      \ })
+endif
+" docker
+if executable('docker-langserver')
+    au User lsp_setup call lsp#register_server({
+        \ 'name': 'docker-langserver',
+        \ 'cmd': {server_info->[&shell, &shellcmdflag, 'docker-langserver --stdio']},
+        \ 'whitelist': ['dockerfile'],
+        \ })
+endif
+
+
+function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete
+    setlocal signcolumn=yes
+    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+    inoremap <buffer> <expr><c-f> lsp#scroll(+4)
+    inoremap <buffer> <expr><c-d> lsp#scroll(-4)
+
+    nmap gd <plug>(lsp-definition)
+    nmap gr <plug>(lsp-references)
+    nmap gi <plug>(lsp-implementation)
+    nmap gt <plug>(lsp-type-definition)
+    nmap <leader>rn <plug>(lsp-rename)
+    nmap [g <plug>(lsp-previous-diagnostic)
+    nmap ]g <plug>(lsp-next-diagnostic)
+    nmap K <plug>(lsp-hover)
+
+    let g:lsp_format_sync_timeout = 1000
+    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+    
+endfunction
+" set completeopt-=preview
+
+augroup lsp_install
+    au!
+    " call s:on_lsp_buffer_enabled only for languages that has the server registered.
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
+let g:lsp_fold_enabled = 0
+let g:lsp_diagnostics_enabled = 0         " disable diagnostics support
+let g:lsp_document_highlight_enabled = 0
+let g:lsp_preview_float = 1
+let g:lsp_gopls_ignore_warning = 1
+
