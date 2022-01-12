@@ -1,70 +1,153 @@
 package main
 
 import (
+	"flag"
+
 	"github.com/apache/pulsar-client-go/pulsar"
 
+	"context"
 	"fmt"
-	"net/http"
-	_ "net/http/pprof"
+	"log"
 	"os"
 	"os/signal"
-	"reflect"
 	"syscall"
-	"unsafe"
+	"time"
+
+	"pulsar_example/pkg"
 )
 
-func main() {
-	go func() {
-		fmt.Println(http.ListenAndServe("localhost:9876", nil))
-	}()
+const (
+	produceInterval = 2 * time.Second
+	numOfProducer   = 30
+)
 
-	newClient := func() {
-		var client pulsar.Client
+func newConsumer(client pulsar.Client, topicName string, subName string) pulsar.Consumer {
+	receiveChannel := make(chan pulsar.ConsumerMessage, 1024)
+	consumer, err := client.Subscribe(pulsar.ConsumerOptions{
+		Topic:                       topicName,
+		SubscriptionName:            subName,
+		Type:                        pulsar.KeyShared,
+		SubscriptionInitialPosition: pulsar.SubscriptionPositionEarliest,
+		MessageChannel:              receiveChannel,
+	})
 
-		opts := pulsar.ClientOptions{
-			URL: "pulsar://127.0.0.1:6650",
-		}
-
-		client, err := pulsar.NewClient(opts)
-		if err != nil {
-			panic(err)
-		}
-
-		channelName := "insert"
-		pp, err := client.CreateProducer(pulsar.ProducerOptions{Topic: channelName})
-		if err != nil {
-			panic(err)
-		}
-		fmt.Println("producer: ", pp)
-
-		receiveChannel := make(chan pulsar.ConsumerMessage, 1024)
-		pc, err := client.Subscribe(pulsar.ConsumerOptions{
-			Topic:                       channelName,
-			SubscriptionName:            channelName,
-			Type:                        pulsar.KeyShared,
-			SubscriptionInitialPosition: pulsar.SubscriptionPositionEarliest,
-			MessageChannel:              receiveChannel,
-		})
-		if err != nil {
-			panic(err)
-		}
-		fmt.Println("consumer: ", pc)
-		pp.Close()
-		pc.Close()
-
-		client.Close()
-		f := reflect.ValueOf(client).Elem().FieldByName("cnxPool")
-		f = reflect.NewAt(f.Type(), unsafe.Pointer(f.UnsafeAddr())).Elem()
-		f.MethodByName("Close").Call(nil)
+	if err != nil {
+		log.Fatalf("new consumer %s for topic %s failed: %v", subName, topicName, err)
 	}
+
+	return consumer
+}
+
+func newProducer(client pulsar.Client, topicName string) pulsar.Producer {
+	producer, err := client.CreateProducer(pulsar.ProducerOptions{
+		Topic: topicName,
+	})
+
+	if err != nil {
+		log.Fatalf("new producer for topic %s failed: %v", topicName, err)
+	}
+
+	return producer
+}
+
+// produce produces once per 20ms
+func produce(ctx context.Context, p pulsar.Producer) {
+	for {
+		select {
+		case <-ctx.Done():
+			log.Printf("Exist produce for context done, producer: %v", p.Name())
+			release(nil, p, nil)
+			return
+		case <-time.After(produceInterval):
+			msg := time.Now().String() + "---" + p.Name()
+
+			_, err := p.Send(context.Background(), &pulsar.ProducerMessage{
+				Payload: []byte(msg),
+			})
+			if err != nil {
+				log.Printf("%sERROR%s Produce: %v, err: %v", color.Red, color.Reset, msg, err)
+				continue
+			}
+
+			log.Printf("%s[Produced]%s: %s", color.Green, color.Reset, msg)
+		}
+	}
+}
+
+func consume(ctx context.Context, c pulsar.Consumer) {
+	for {
+		select {
+		case <-ctx.Done():
+			log.Printf("Exist consumer for context done, consumer: %v", c.Name())
+			release(nil, nil, c)
+		default:
+			msg, err := c.Receive(ctx)
+			if err != nil {
+				log.Printf("%sERROR%s Consume: %v", color.Red, color.Reset, err)
+				continue
+			}
+
+			log.Printf("%s[Received]%s: -- content: '%s'\n", color.Blue, color.Reset, string(msg.Payload()))
+
+			c.Ack(msg)
+		}
+	}
+}
+
+func release(client pulsar.Client, p pulsar.Producer, c pulsar.Consumer) {
+	if c != nil {
+		c.Close()
+		log.Printf("Closed pulsar consumer: %v", c)
+	}
+
+	if p != nil {
+		p.Close()
+		log.Printf("Closed pulsar producer: %v", p)
+	}
+
+	if client != nil {
+		client.Close()
+		log.Printf("Closed pulsar client: %v", client)
+	}
+}
+
+var pulsarHost = flag.String("pulsarhost", "pulsar://127.0.0.1:6650", "Pulsar URL")
+
+func main() {
+
+	flag.Parse()
+
+	pulsarURL := fmt.Sprintf("pulsar://%s:6650", *pulsarHost)
+	log.Printf("Pulsar URL: %v", pulsarURL)
+
+	opts := pulsar.ClientOptions{
+		URL:               pulsarURL,
+		OperationTimeout:  30 * time.Second,
+		ConnectionTimeout: 30 * time.Second,
+	}
+
+	client, err := pulsar.NewClient(opts)
+	defer release(client, nil, nil)
+	if err != nil {
+		log.Fatalf("new pulsar client failed: %v", err)
+	}
+
+	TopicName := "statistic-channel"
+
+	ctx, cancel := context.WithCancel(context.TODO())
+	defer cancel()
+
+	for i := 0; i < numOfProducer; i++ {
+		p := newProducer(client, TopicName)
+		go produce(ctx, p)
+	}
+
+	c := newConsumer(client, TopicName, "only-consumer")
+	go consume(ctx, c)
 
 	sc := make(chan os.Signal, 1)
 
-	go func() {
-		for i := 0; i < 10000; i++ {
-			newClient()
-		}
-	}()
+	// ....
 
 	signal.Notify(sc,
 		syscall.SIGHUP,
@@ -74,5 +157,4 @@ func main() {
 
 	sig := <-sc
 	fmt.Println("Get signal to exit", sig.String())
-
 }
