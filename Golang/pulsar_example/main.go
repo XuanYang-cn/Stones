@@ -17,8 +17,8 @@ import (
 )
 
 const (
-	produceInterval = 2 * time.Second
-	numOfProducer   = 30
+	produceInterval = 200 * time.Millisecond
+	numOfProducer   = 1
 )
 
 func newConsumer(client pulsar.Client, topicName string, subName string) pulsar.Consumer {
@@ -51,7 +51,8 @@ func newProducer(client pulsar.Client, topicName string) pulsar.Producer {
 }
 
 // produce produces once per 20ms
-func produce(ctx context.Context, p pulsar.Producer) {
+func produce(ctx context.Context, client pulsar.Client, topicName string) {
+	p := newProducer(client, topicName)
 	for {
 		select {
 		case <-ctx.Done():
@@ -75,11 +76,20 @@ func produce(ctx context.Context, p pulsar.Producer) {
 }
 
 func consume(ctx context.Context, c pulsar.Consumer) {
+	msg, err := c.Receive(ctx)
+	if err != nil {
+		log.Fatalf("error when receive the first msg: %s", err.Error())
+	}
+	c.Seek(msg.ID())
+
+	log.Printf("Consumer seek to msgID: %s", msg.ID())
+
 	for {
 		select {
 		case <-ctx.Done():
 			log.Printf("Exist consumer for context done, consumer: %v", c.Name())
 			release(nil, nil, c)
+			return
 		default:
 			msg, err := c.Receive(ctx)
 			if err != nil {
@@ -113,15 +123,9 @@ func release(client pulsar.Client, p pulsar.Producer, c pulsar.Consumer) {
 
 var pulsarHost = flag.String("pulsarhost", "pulsar://127.0.0.1:6650", "Pulsar URL")
 
-func main() {
-
-	flag.Parse()
-
-	pulsarURL := fmt.Sprintf("pulsar://%s:6650", *pulsarHost)
-	log.Printf("Pulsar URL: %v", pulsarURL)
-
+func testSendAndReceive(url string) {
 	opts := pulsar.ClientOptions{
-		URL:               pulsarURL,
+		URL:               url,
 		OperationTimeout:  30 * time.Second,
 		ConnectionTimeout: 30 * time.Second,
 	}
@@ -132,23 +136,19 @@ func main() {
 		log.Fatalf("new pulsar client failed: %v", err)
 	}
 
-	TopicName := "statistic-channel"
+	TopicName := "statistic-channel-twice"
 
 	ctx, cancel := context.WithCancel(context.TODO())
 	defer cancel()
 
 	for i := 0; i < numOfProducer; i++ {
-		p := newProducer(client, TopicName)
-		go produce(ctx, p)
+		go produce(ctx, client, TopicName)
 	}
 
 	c := newConsumer(client, TopicName, "only-consumer")
 	go consume(ctx, c)
 
 	sc := make(chan os.Signal, 1)
-
-	// ....
-
 	signal.Notify(sc,
 		syscall.SIGHUP,
 		syscall.SIGINT,
@@ -157,4 +157,16 @@ func main() {
 
 	sig := <-sc
 	fmt.Println("Get signal to exit", sig.String())
+}
+
+func main() {
+
+	flag.Parse()
+
+	pulsarURL := fmt.Sprintf("pulsar://%s:6650", *pulsarHost)
+	log.Printf("Pulsar URL: %v", pulsarURL)
+
+	testSendAndReceive(pulsarURL)
+
+	// ....
 }
