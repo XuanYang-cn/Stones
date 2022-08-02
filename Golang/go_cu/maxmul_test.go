@@ -85,34 +85,35 @@ func TestGCal(t *testing.T) {
 	})
 }
 
-func BenchmarkMaxMulG_Multi(b *testing.B) {
-	for size := 100; size <= 1000; size += 100 {
-		b.Run(fmt.Sprintf("%d", size), func(b *testing.B) {
+// func BenchmarkMaxMulG_Multi(b *testing.B) {
+//     for size := 100; size <= 1000; size += 100 {
+//         b.Run(fmt.Sprintf("%d", size), func(b *testing.B) {
+//
+//             var (
+//                 dataA  = make([]float32, size*size)
+//                 dataB  = make([]float32, size*size)
+//                 result = make([]float32, size*size)
+//             )
+//
+//             for i := range dataA {
+//                 d := rand.Float32()
+//
+//                 dataA[i] = d
+//                 dataB[i] = d
+//             }
+//
+//             for i := 0; i < b.N; i++ {
+//                 CCal(dataA, dataB, result, size)
+//             }
+//
+//             r = result
+//         })
+//     }
+// }
 
-			var (
-				dataA  = make([]float32, size*size)
-				dataB  = make([]float32, size*size)
-				result = make([]float32, size*size)
-			)
+func BenchmarkMaxMulC_10(b *testing.B) { benchmarkMaxMulC(b, 10) }
+func BenchmarkMaxMulG_10(b *testing.B) { benchmarkMaxMulG(b, 10) }
 
-			for i := range dataA {
-				d := rand.Float32()
-
-				dataA[i] = d
-				dataB[i] = d
-			}
-
-			for i := 0; i < b.N; i++ {
-				CCal(dataA, dataB, result, size)
-			}
-
-			r = result
-		})
-	}
-}
-
-// func BenchmarkMaxMulC_10(b *testing.B) { benchmarkMaxMulC(b, 10) }
-// func BenchmarkMaxMulG_10(b *testing.B) { benchmarkMaxMulG(b, 10) }
 //
 // func BenchmarkMaxMulC_50(b *testing.B) { benchmarkMaxMulC(b, 50) }
 // func BenchmarkMaxMulG_50(b *testing.B) { benchmarkMaxMulG(b, 50) }
