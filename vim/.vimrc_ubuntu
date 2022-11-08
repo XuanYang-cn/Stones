@@ -31,9 +31,9 @@ set shiftwidth=4
 set noeb vb t_vb=
 set t_TE=
 set t_TI=
-let &t_SI = "\<Esc>[3 q" "INSERT mode
+let &t_SI = "\<Esc>[1 q" "INSERT mode
 let &t_SR = "\<Esc>[2 q" "REPLACE mode
-let &t_EI = "\<Esc>[4 q" "NORMAL mode (ELSE)
+let &t_EI = "\<Esc>[1 q" "NORMAL mode (ELSE)
 "  1 -> blinking block
 "  2 -> solid block
 "  3 -> blinking underscore
@@ -47,7 +47,7 @@ set foldmethod=indent
 set foldlevel=99
 
 " set encoding
-set colorcolumn=110
+set colorcolumn=120
 highlight ColorColumn ctermbg=darkgray
 set encoding=utf-8
 set termencoding=utf-8
@@ -93,9 +93,6 @@ Plug 'iamcco/markdown-preview.vim'
 Plug 'Rykka/riv.vim'
 Plug 'Rykka/InstantRst'
 
-" schema color
-Plug 'morhetz/gruvbox'
-
 Plug 'preservim/nerdtree'
 
 " simplefold
@@ -126,36 +123,34 @@ let NERDTreeShowHidden=1
 
 " ale linter
 let g:ale_linters_explicit = 1
-let g:ale_lint_on_text_changed = 'normal'
-let g:ale_lint_on_insert_leave = 1
-let g:ale_lint_on_enter = 1
+let g:ale_lint_on_text_changed = 1
+let g:ale_lint_delay = 2
 let g:airline#extensions#ale#enabled = 1
+let g:ale_lint_on_enter = 1
 
 let g:ale_completion_enabled = 0
-let g:ale_sign_column_always = 1
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:ale_python_flake8_options = '--ignore=E501'
 let g:ale_fix_on_save = 1
 let g:ale_linters = {
-\   'python': ['flake8'],
+\   'python': ['pylint'],
 \   'cpp':['clang-format', 'g++'],
 \   'go':['golangci-lint', 'govet', 'golint'],
 \}
+let g:ale_python_pylint_options = '--rcfile pylint.conf'
 
 nmap <silent> <leader><C-[> <Plug>(ale_previous_wrap)
 nmap <silent> <leader><C-]> <Plug>(ale_next_wrap)
 
- " \ 'cpp': ['clang-format'],
  let g:ale_fixers={
  \ 'go' : ['gofmt'],
  \}
+ " \ 'cpp': ['clang-format'],
  " \ 'python': ['remove_trailing_lines', 'trim_whitespace'],
 
-" gruvbox
-" colorscheme gruvbox
-colorscheme peachpuff
+colorscheme default
 set background=light
 
 " simplefold
